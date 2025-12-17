@@ -25,12 +25,11 @@ class Sources {
             .map(b => b.toString(16).padStart(2, '0'))
             .join('');
     }
-  static getRtfSourcesReference(src, style) {
-      const width =  Sources.getStyleInImgTag(style, 'width');
-      const height =  Sources.getStyleInImgTag(style, 'height');
+  static getRtfSourcesReference(src, style, w, h) {
+      const width = Sources.getAttributeInImgTag(w) || Sources.getStyleInImgTag(style, 'width');
+      const height = Sources.getAttributeInImgTag(h) || Sources.getStyleInImgTag(style, 'height');
       let sizeStyle = width > 0 ? '\\picwgoal' + width : '';
       sizeStyle += height > 0 ? '\\pichgoal' + height : '';
-      console.info(sizeStyle)
       const imgType = MyString.findTextBetween(src, 'data:image/', ';' ) || '';
       const isBrowser = typeof window !== 'undefined' && typeof window.document !== 'undefined';
       const innerText = src.replace( 'data:image/'+ imgType + ';base64,', '' );
@@ -44,6 +43,13 @@ class Sources {
           const multiplier = Indentation.getMultiplier( value ) || 0;
           return Math.trunc(parseFloat(value) * multiplier);
       }
+  }
+
+  static getAttributeInImgTag(value) {
+    if(value) {
+        const multiplier = Indentation.getMultiplier( value ) || 0;
+        return Math.trunc(parseFloat(value) * multiplier);
+    }
   }
 }
 

@@ -134,7 +134,7 @@ class Rtf {
       this.addReferenceTagInRtfCode(Alignment.getRtfAlignmentReference(attributes.align));
     }
     if(attributes.src !== undefined) {
-      this.addReferenceTagInRtfCode(Sources.getRtfSourcesReference(attributes.src, attributes.style));
+      this.addReferenceTagInRtfCode(Sources.getRtfSourcesReference(attributes.src, attributes.style, attributes.width, attributes.height));
   }
     }
 
