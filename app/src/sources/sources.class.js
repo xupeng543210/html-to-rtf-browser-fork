@@ -10,6 +10,21 @@ const IMG_MAP = {
 }
 
 class Sources {
+    static base64ToHex(base64) {
+        // 1. base64 → binary string
+        const binary = atob(base64);
+
+        // 2. binary string → Uint8Array
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) {
+            bytes[i] = binary.charCodeAt(i);
+        }
+
+        // 3. Uint8Array → hex string
+        return Array.from(bytes)
+            .map(b => b.toString(16).padStart(2, '0'))
+            .join('');
+    }
   static getRtfSourcesReference(src, style) {
       const width =  Sources.getStyleInImgTag(style, 'width');
       const height =  Sources.getStyleInImgTag(style, 'height');
@@ -17,8 +32,10 @@ class Sources {
       sizeStyle += height > 0 ? '\\pichgoal' + height : '';
       console.info(sizeStyle)
       const imgType = MyString.findTextBetween(src, 'data:image/', ';' ) || '';
-      const buffer = new Buffer( src.replace( 'data:image/'+ imgType + ';base64,', '' ), 'base64' );
-      return IMG_MAP[imgType.toLowerCase()] + sizeStyle + ' ' + buffer.toString('hex');
+      const isBrowser = typeof window !== 'undefined' && typeof window.document !== 'undefined';
+      const innerText = src.replace( 'data:image/'+ imgType + ';base64,', '' );
+      const str = isBrowser ? Sources.base64ToHex(innerText) : new Buffer(innerText, 'base64' ).toString('hex')
+      return IMG_MAP[imgType.toLowerCase()] + sizeStyle + ' ' + str;
   }
 
   static getStyleInImgTag( style, property ) {

@@ -10,6 +10,9 @@
 
 If I missed some functionality in other forks, please let me know, or make a PR.
 
+## Build Pre
+Looks need npm install webpack-cli@4 first then run `webpack` to build.
+
 ## Prerequisites
 >This project work in the browser (maybe it works on the server side, but this is not the main goal.
 

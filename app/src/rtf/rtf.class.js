@@ -177,7 +177,7 @@ class Rtf {
 
   setHrefInRtf(tag) {
     if (tag.attribs.href) {
-      this.addReferenceTagInRtfCode(`{\\*\\fldinst HYPERLINK "${tag.attribs.href}"}`);
+      this.addReferenceTagInRtfCode(`{\\*\\fldinst { HYPERLINK "${tag.attribs.href}" }}`);
     }
   }
 
