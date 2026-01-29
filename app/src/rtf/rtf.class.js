@@ -182,7 +182,7 @@ class Rtf {
   }
 
   setOpenLinkFrameInRtf() {
-    this.addReferenceTagInRtfCode('{\\fldrslt');
+    this.addReferenceTagInRtfCode('{\\fldrslt {\\cf1');
   }
 
   setCloseLinkFrameInRtf() {

@@ -1,7 +1,9 @@
 const RTF_COLOR_TABLE_OPENING = '{\\colortbl ;';
 const RTF_COLOR_TABLE_CLOSING = '}';
 const MyString = require('../string/my-string.class');
-var colorTable = [{ amount: 0 }, []];
+var colorTable = [{ amount: 0 }, [
+    { red: 0, green: 0, blue: 0 }
+]];
 
 class Color {
     static getRtfColorTable() {
