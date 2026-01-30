@@ -1,4 +1,5 @@
 const cheerio         = require('cheerio');
+const $               = cheerio.load('');
 const Alignment       = require('../alignment/alignment.class');
 const Color           = require('../color/color.class');
 const Sources         = require('../sources/sources.class');
@@ -88,8 +89,9 @@ class Rtf {
                 this.setHighlightInRtf();
             }
             if (parentTag.name.toLowerCase() === 'a') {
+                const ref = this.getLinkColorRef(parentTag);
                 this.setHrefInRtf(parentTag);
-                this.setOpenLinkFrameInRtf();
+                this.setOpenLinkFrameInRtf(ref); 
             }
 
             (parentTag.children).forEach((child) => {
@@ -181,12 +183,36 @@ class Rtf {
     }
   }
 
-  setOpenLinkFrameInRtf() {
-    this.addReferenceTagInRtfCode('{\\fldrslt {\\cf1');
+  setOpenLinkFrameInRtf(ref) {
+    this.addReferenceTagInRtfCode(`{\\fldrslt ${ref}`);  
   }
 
   setCloseLinkFrameInRtf() {
     this.addReferenceTagInRtfCode('}');
+  }
+
+  parseStyleProperty(styleValue, property) {
+    const fictitiousTagWithTruthStyle = `<span style="${styleValue}"></span>`;
+    return $(fictitiousTagWithTruthStyle).css(property)
+  }
+
+  getLinkColorRef(tag) {
+    let attribs = tag.attribs;
+    while((!attribs || !attribs.style || this.parseStyleProperty(attribs.style, 'color') === undefined) && tag) {
+      tag = tag.parent;
+      if(tag) {
+        attribs = tag.attribs;
+      } else {
+        attribs = {};
+      }
+    }
+
+    if(attribs.style) {
+      const color = this.parseStyleProperty(attribs.style, 'color');
+      const rtfReferenceColor = Color.getRtfReferenceColor(color);
+      return rtfReferenceColor;
+    }
+    return '\\cf0';
   }
 
   clearCacheContent() {

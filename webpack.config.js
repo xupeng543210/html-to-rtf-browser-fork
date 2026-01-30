@@ -12,7 +12,7 @@ module.exports = {
     // The name under which the lib will be exported.
     library: 'HtmlToRtfBrowser',
 
-    filename: 'main.js',
+    filename: 'html2rtf.min.js',
     path: path.resolve(__dirname, 'dist'),
     libraryTarget: 'umd',
     libraryExport: 'default'
